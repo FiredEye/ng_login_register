@@ -1,7 +1,28 @@
-<div class="flex flex-col gap-3">
-  <p>Home Page</p>
+<h1>Home Page:</h1>
+<div class="min-w-[580px] shadow-lg rounded-md p-3 flex flex-col gap-4">
+  <p>User List:</p>
+  <div class="mx-auto w-full my-5 space-y-9 overflow-x-auto h-[500px]">
+    <table class="mt-4 w-full min-w-max table-auto text-left">
+      <thead class="sticky top-0 z-[999] bg-gray-400">
+        <tr>
+          <th>ID</th>
+          <th>User Name</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for(user of userList; track $index){
+        <tr class="border-b-2 text-center">
+          <td class="p-2 m-1">{{ user.id }}</td>
+          <td class="p-2 m-1">{{ user.userName }}</td>
+          <td class="p-2 m-1">{{ user.email }}</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
   <a
-    class="bg-blue-400 rounded-md py-3 font-semibold w-full my-2 px-1 hover:cursor-pointer"
+    class="bg-blue-400 rounded-md py-3 font-semibold w-full my-2 px-1 hover:cursor-pointer text-center"
     routerLink="/login"
   >
     Back to Login

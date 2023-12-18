@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { Router, RouterLink } from '@angular/router';
+import { CardModule } from 'primeng/card';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [InputTextModule, ReactiveFormsModule, RouterLink],
+  imports: [InputTextModule, ReactiveFormsModule, RouterLink, CardModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })

@@ -1,8 +1,15 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  Validators,
+  ReactiveFormsModule,
+  ValidatorFn,
+  AbstractControl,
+  ValidationErrors,
+} from '@angular/forms';
 
 import { InputTextModule } from 'primeng/inputtext';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -13,13 +20,33 @@ import { RouterLink } from '@angular/router';
   styleUrl: './register.component.css',
 })
 export class RegisterComponent {
-  registerForm = this.fb.group({
-    username: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', Validators.required],
-  });
+  passwordMatchValidator: ValidatorFn = (
+    control: AbstractControl
+  ): ValidationErrors | null => {
+    const password = control.get('password');
+    const confirmPassword = control.get('confirmPassword');
 
-  constructor(private fb: FormBuilder) {}
+    if (!password || !confirmPassword) {
+      return null;
+    }
+
+    return password.value === confirmPassword.value
+      ? null
+      : { passwordMismatch: true };
+  };
+
+  registerForm = this.fb.group(
+    {
+      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+      confirmPassword: ['', Validators.required],
+    },
+    {
+      validators: this.passwordMatchValidator,
+    }
+  );
+  constructor(private fb: FormBuilder, private router: Router) {}
   get username() {
     return this.registerForm.controls['username'];
   }
@@ -29,8 +56,13 @@ export class RegisterComponent {
   get password() {
     return this.registerForm.controls['password'];
   }
+  get confirmPassword() {
+    return this.registerForm.controls['confirmPassword'];
+  }
+
   registerUser() {
     const { username, email, password } = this.registerForm.value;
     console.log(username, email);
+    this.router.navigate(['/login']);
   }
 }

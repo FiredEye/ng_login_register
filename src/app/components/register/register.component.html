@@ -59,8 +59,29 @@
       </small>
       }
     </div>
+    <div class="flex flex-col gap-3">
+      <label for="confirmpassword">Confirm Password</label>
+      <input
+        type="password"
+        formControlName="confirmPassword"
+        class="w-full border py-2 px-1"
+        name="confirmPassword"
+        placeholder="confirm password"
+      />
+      @if ( confirmPassword.invalid && (confirmPassword.dirty ||
+      confirmPassword.touched)) {
+      <small class="block text-red-400">
+        @if(confirmPassword.errors?.['required']){
+
+        <div>Password is required.</div>
+        }
+      </small>
+      } @if(registerForm.errors?.['passwordMismatch'] && confirmPassword.valid
+      && password.valid){
+      <small class="block text-red-400"> Password should match </small>
+      }
+    </div>
     <button
-      label="SIGN IN"
       type="submit"
       [disabled]="registerForm.invalid"
       class="bg-blue-400 rounded-md py-3 font-semibold w-full my-2"
