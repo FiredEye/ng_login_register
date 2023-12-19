@@ -51,6 +51,11 @@
       Login
     </button>
   </form>
+  @if(userNotExist){
+  <small class="text-red-400">User email doesn't exist!</small>
+  }@if(passwordNotMatch){
+  <small class="text-red-400">password doesn't match</small>
+  }
   <div class="mt-2">
     Not a member?
     <a routerLink="/register" class="hover:text-blue-400 hover:cursor-pointer"

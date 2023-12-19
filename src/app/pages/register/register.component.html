@@ -23,6 +23,23 @@
       >}
     </div>
     <div class="flex flex-col gap-3">
+      <label for="address">Address</label>
+      <input
+        type="text"
+        formControlName="address"
+        class="w-full border py-2 px-1"
+        name="address"
+        placeholder="Type your email"
+      />
+      @if(address.invalid && (address.dirty || address.touched)) {<small
+        class="block text-red-400"
+      >
+        @if(address.errors?.['required']){
+        <div>Address is required.</div>
+        }</small
+      >}
+    </div>
+    <div class="flex flex-col gap-3">
       <label for="email">Email</label>
       <input
         type="text"
@@ -81,6 +98,16 @@
       <small class="block text-red-400"> Password should match </small>
       }
     </div>
+    <div class="flex flex-col gap-3">
+      <label for="profileImage">Profile Image</label>
+      <input
+        type="file"
+        (change)="onFileChange($event)"
+        class="w-full border py-2 px-1"
+        name="profileImage"
+        accept="image/*"
+      />
+    </div>
     <button
       type="submit"
       [disabled]="registerForm.invalid"
@@ -88,7 +115,18 @@
     >
       Register
     </button>
+
+    @if(imgSrc){<img
+      src="{{ imgSrc }}"
+      alt="user image"
+      class="object-cover w-[130px] h-[200px]"
+    />}
   </form>
+  @if(userExist){
+  <small class="text-red-400">User email already exist!</small>
+  } @if(imageNotSelected){
+  <small class="text-red-400">Please upload an Image!</small>
+  }
   <div class="mt-2">
     Already a member?
     <a routerLink="/login" class="hover:text-blue-400 hover:cursor-pointer"

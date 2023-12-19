@@ -1,0 +1,79 @@
+<div class="min-w-[580px] shadow-lg rounded-md p-3 flex flex-col gap-4">
+  <div class="flex justify-between items-center">
+    <h1 class="font-bold text-[22px]">User Detail:</h1>
+    <div class="flex justify-between items-center gap-3">
+      <button
+        class="rounded-md px-4 py-2 bg-orange-400"
+        routerLink="/update/{{ user?.id }}"
+      >
+        Update
+      </button>
+      <button
+        class="rounded-md px-4 py-2 bg-red-400"
+        (click)="showDialog(true)"
+      >
+        Delete
+      </button>
+
+      <button class="rounded-md px-4 py-2 bg-blue-400" routerLink="/home">
+        back
+      </button>
+    </div>
+  </div>
+
+  <table>
+    <tr>
+      <td>User Name</td>
+      <td class="py-3">{{ user?.userName }}</td>
+    </tr>
+    <tr>
+      <td>Email</td>
+      <td class="py-3">{{ user?.email }}</td>
+    </tr>
+    <tr>
+      <td>Address</td>
+      <td class="py-3">{{ user?.address }}</td>
+    </tr>
+    <tr>
+      <td>profile pic</td>
+      <td class="py-3">
+        <img
+          src="{{ imgBaseUrl + user?.imageUrl }}"
+          alt="user image"
+          style="height: 300px; object-fit: cover; width: 240px"
+        />
+      </td>
+    </tr>
+  </table>
+  @if(visible){
+  <div
+    class="shadow-lg rounded-md p-4 absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[480px] h-[250px] bg-white flex flex-col justify-between"
+  >
+    <div class="flex justify-between items-center">
+      <h1 class="text-[22px] font-bold">Are you sure?</h1>
+      <i
+        class="pi pi-times"
+        style="font-size: 20px; cursor: pointer"
+        title="close"
+        (click)="showDialog(false)"
+      ></i>
+    </div>
+    <div>Deleted data cannot be retrived!</div>
+    <div class="flex gap-3">
+      <button
+        class="px-4 py-2 rounded-md bg-gray-500"
+        (click)="showDialog(false)"
+      >
+        close
+      </button>
+      <button
+        class="px-4 py-2 rounded-md bg-red-500"
+        (click)="deleteUser(user?.id ?? '', user?.imageUrl ?? '')"
+      >
+        delete
+      </button>
+    </div>
+  </div>
+
+  }
+</div>

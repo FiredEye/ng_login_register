@@ -1,21 +1,28 @@
 <h1>Home Page:</h1>
-<div class="min-w-[580px] shadow-lg rounded-md p-3 flex flex-col gap-4">
-  <p>User List:</p>
-  <div class="mx-auto w-full my-5 space-y-9 overflow-x-auto h-[500px]">
+<div class="min-w-[580px] shadow-lg rounded-md p-3 flex flex-col gap-2">
+  <h1 class="font-bold text-[22px]">User List:</h1>
+  <div class="mx-auto w-full my-2 space-y-9 overflow-x-auto h-[500px]">
     <table class="mt-4 w-full min-w-max table-auto text-left">
       <thead class="sticky top-0 z-[999] bg-gray-400">
         <tr>
-          <th>ID</th>
-          <th>User Name</th>
+          <th>S.N.</th>
           <th>Email</th>
+          <th>View Details</th>
         </tr>
       </thead>
       <tbody>
         @for(user of userList; track $index){
         <tr class="border-b-2 text-center">
-          <td class="p-2 m-1">{{ user.id }}</td>
-          <td class="p-2 m-1">{{ user.userName }}</td>
+          <td class="p-2 m-1">{{ $index + 1 }}</td>
           <td class="p-2 m-1">{{ user.email }}</td>
+          <td class="p-2 m-1">
+            <i
+              class="pi pi-eye"
+              style="color: green; font-size: 20px; cursor: pointer"
+              routerLink="/detail/{{ user.id }}"
+              title="view details"
+            ></i>
+          </td>
         </tr>
         }
       </tbody>

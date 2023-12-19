@@ -2,17 +2,25 @@ import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { UsersService } from '../../services/users.service';
 import { User } from '../../interfaces/user';
+import { DialogModule } from 'primeng/dialog';
+
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, DialogModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
 export class HomeComponent {
   userList: User[] = [];
   userService: UsersService = inject(UsersService);
+
   constructor() {
-    this.userList = this.userService.getAllUsers();
+    this.userService
+      .getAllUsers()
+      .then((userList: User[]) => {
+        this.userList = userList;
+      })
+      .catch((err) => console.log(err));
   }
 }

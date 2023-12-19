@@ -1,8 +1,10 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
-import { HomeComponent } from './components/home/home.component';
-import { NotFoundComponent } from './components/not-found/not-found.component';
+import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { HomeComponent } from './pages/home/home.component';
+import { UserDetailComponent } from './pages/user-detail/user-detail.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { UserUpdateComponent } from './pages/user-update/user-update.component';
 
 export const routes: Routes = [
   {
@@ -18,6 +20,14 @@ export const routes: Routes = [
     path: '',
     redirectTo: 'home',
     pathMatch: 'full',
+  },
+  {
+    path: 'detail/:id',
+    component: UserDetailComponent,
+  },
+  {
+    path: 'update/:id',
+    component: UserUpdateComponent,
   },
   { path: '**', component: NotFoundComponent },
 ];
