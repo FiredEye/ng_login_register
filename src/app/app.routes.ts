@@ -5,6 +5,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { UserDetailComponent } from './pages/user-detail/user-detail.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { UserUpdateComponent } from './pages/user-update/user-update.component';
+import { authGuard } from './gaurds/auth.guard';
 
 export const routes: Routes = [
   {
@@ -15,6 +16,7 @@ export const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
+    canActivate: [authGuard],
   },
   {
     path: '',

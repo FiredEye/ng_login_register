@@ -37,13 +37,14 @@ export class LoginComponent implements OnInit {
   }
   loginUser() {
     const { email, password } = this.loginForm.value;
-    console.log(email);
+
     this.userService.getUserByEmail(email ?? '').subscribe({
       next: (user) => {
         if (user) {
           this.userService.checkUser(email ?? '', password ?? '').subscribe({
             next: (user) => {
               if (user) {
+                sessionStorage.setItem('email', email as string);
                 this.router.navigate(['/home']);
               } else {
                 this.passwordNotMatch = true;
