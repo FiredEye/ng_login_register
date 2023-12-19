@@ -7,6 +7,7 @@ import { UsersService } from '../../services/users.service';
 import { v4 as uuidv4 } from 'uuid';
 import { FileUploadService } from '../../services/file-upload.service';
 import { User } from '../../interfaces/user';
+import { finalize, switchMap } from 'rxjs';
 @Component({
   selector: 'app-update-form',
   standalone: true,
@@ -60,44 +61,52 @@ export class UpdateFormComponent implements OnInit {
   }
   updateUser() {
     const { username, email, address } = this.updateForm.value;
-    if (this.selectedFile !== null) {
-      this.user &&
-        this.fileUploadService
-          .updateFile(this.selectedFile, this.user?.imageUrl)
-          .then((response: any) => {
-            const imageUrl = response?.imageUrl;
+    const updateUserParams = {
+      userName: username,
+      email,
+      password: this.user?.password,
+      address,
+    };
+    const updateObservable =
+      this.selectedFile !== null
+        ? this.fileUploadService.updateFile(
+            this.selectedFile,
+            this.user?.imageUrl ?? ''
+          )
+        : null;
 
-            this.user &&
-              this.userService
-                .updateUser(this.user.id, {
-                  userName: username,
-                  email,
-                  password: this.user.password,
-                  address,
-                  imageUrl,
-                })
-                .then(() => {
-                  console.log('user updated.');
-                  this.user &&
-                    this.router.navigate([`/detail/${this.user.id}`]);
-                })
-                .catch((err) => console.log(err));
-          });
+    if (updateObservable) {
+      updateObservable
+        .pipe(
+          switchMap((response: any) => {
+            const imageUrl = response?.imageUrl;
+            return this.userService.updateUser(this.user?.id || '', {
+              ...updateUserParams,
+              imageUrl,
+            });
+          }),
+          finalize(() => this.onUpdateComplete())
+        )
+        .subscribe({
+          next: () => console.log('User updated.'),
+          error: (e) => console.error(e),
+        });
     } else {
-      this.user &&
-        this.userService
-          .updateUser(this.user.id, {
-            userName: username,
-            email,
-            password: this.user.password,
-            address,
-            imageUrl: this.user.imageUrl,
-          })
-          .then(() => {
-            console.log('user updated.');
-            this.user && this.router.navigate([`/detail/${this.user.id}`]);
-          })
-          .catch((err) => console.log(err));
+      this.userService
+        .updateUser(this.user?.id || '', {
+          ...updateUserParams,
+          imageUrl: this.user?.imageUrl,
+        })
+        .pipe(finalize(() => this.onUpdateComplete()))
+        .subscribe({
+          next: () => console.log('User updated.'),
+          error: (e) => console.error(e),
+        });
+    }
+  }
+  onUpdateComplete() {
+    if (this.user) {
+      this.router.navigate([`/detail/${this.user.id}`]);
     }
   }
 }

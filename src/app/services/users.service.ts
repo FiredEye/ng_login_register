@@ -1,67 +1,98 @@
 import { Injectable } from '@angular/core';
 import { User } from '../interfaces/user';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, catchError, map, throwError } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
 export class UsersService {
-  url = 'http://localhost:3000/users';
+  private url = 'http://localhost:3000/users';
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
-  async getAllUsers(): Promise<User[]> {
-    const data = await fetch(this.url);
-    return (await data.json()) ?? [];
-  }
-  async getUserById(id: string): Promise<User | undefined> {
-    const users = await this.getAllUsers();
-    return users.find((user) => user.id === id);
-  }
-  async getUserByEmail(email: string): Promise<User | undefined> {
-    const users = await this.getAllUsers();
-    return users.find((user) => user.email === email);
-  }
-  async checkUser(email: string, password: string): Promise<User | undefined> {
-    const users = await this.getAllUsers();
-    return users.find(
-      (user) => user.email === email && user.password === password
+  // async getAllUsers(): Promise<User[]> {
+  //   const data = await fetch(this.url);
+  //   return (await data.json()) ?? [];
+  // }
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.url).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error fetching user list:', error);
+        return throwError(() => new Error('Failed to fetch user list'));
+      })
     );
   }
-  async addUser(userData: User): Promise<User> {
-    const response = await fetch(this.url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(userData),
-    });
-
-    return response.json();
+  getUserById(id: string): Observable<User | undefined> {
+    return this.http.get<User>(`${this.url}/${id}`).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error fetching user:', error);
+        return throwError(() => new Error('Failed to fetch user'));
+      })
+    );
   }
-  async updateUser(userId: string, updatedUserData: any): Promise<User> {
+
+  getUserByEmail(email: string): Observable<User | undefined> {
+    return this.getAllUsers().pipe(
+      map((users) => users.find((user) => user.email === email)),
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error fetching user:', error);
+        return throwError(() => new Error('Failed to fetch user'));
+      })
+    );
+  }
+  checkUser(email: string, password: string): Observable<User | undefined> {
+    return this.getAllUsers().pipe(
+      map((users) =>
+        users.find((user) => user.email === email && user.password === password)
+      ),
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error fetching user:', error);
+        return throwError(() => new Error('Failed to fetch user'));
+      })
+    );
+  }
+  addUser(userData: User): Observable<User> {
+    return this.http
+      .post<User>(this.url, userData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error adding user:', error);
+          return throwError(() => new Error('Failed adding user'));
+        })
+      );
+  }
+  updateUser(userId: string, updatedUserData: any): Observable<User> {
     const updateUrl = `${this.url}/${userId}`;
-
-    const response = await fetch(updateUrl, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updatedUserData),
-    });
-
-    return response.json();
+    return this.http
+      .put<User>(updateUrl, updatedUserData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error updating user:', error);
+          return throwError(() => new Error('Failed updating user'));
+        })
+      );
   }
-  async deleteUser(userId: string): Promise<void> {
+  deleteUser(userId: string): Observable<void> {
     const deleteUrl = `${this.url}/${userId}`;
-
-    const response = await fetch(deleteUrl, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
+    return this.http
+      .delete<void>(deleteUrl, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error deleting user:', error);
+          return throwError(() => new Error('Failed deleting user'));
+        })
+      );
   }
 }

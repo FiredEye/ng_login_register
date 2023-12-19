@@ -20,12 +20,10 @@ export class UserDetailComponent {
   user: User | undefined;
   constructor(private router: Router) {
     const userId = String(this.route.snapshot.params['id']);
-    this.userService
-      .getUserById(userId)
-      .then((user) => {
-        this.user = user;
-      })
-      .catch((err) => console.log(err));
+    this.userService.getUserById(userId).subscribe({
+      next: (user) => (this.user = user),
+      error: (e) => console.error(e),
+    });
   }
   visible = false;
   showDialog(visible: boolean) {
@@ -34,12 +32,17 @@ export class UserDetailComponent {
 
   deleteUser(id: string, imageUrl: string) {
     if (id && imageUrl) {
-      this.fileUploadService.deleteFile(imageUrl).then((res) => {
-        this.userService.deleteUser(id).then(() => {
-          console.log('user deleted.');
-          this.router.navigate(['']);
-        });
-        console.log(res?.imageUrl);
+      this.fileUploadService.deleteFile(imageUrl).subscribe({
+        next: (res) => {
+          this.userService.deleteUser(id).subscribe({
+            next: () => {
+              console.log('user deleted.');
+              this.router.navigate(['']);
+            },
+            error: (e) => console.error(e),
+          });
+        },
+        error: (e) => console.error(e),
       });
     }
   }

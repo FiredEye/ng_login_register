@@ -86,31 +86,37 @@ export class RegisterComponent implements OnInit {
     const { username, email, password, address } = this.registerForm.value;
 
     if (this.selectedFile !== null) {
-      this.userService.getUserByEmail(email ?? '').then((user) => {
-        if (user) {
-          this.userExist = true;
-        } else {
-          this.selectedFile !== null &&
-            this.fileUploadService
-              .uploadFile(this.selectedFile)
-              .then((response: any) => {
-                const imageUrl = response?.imageUrl;
-                this.userService
-                  .addUser({
-                    id: uuidv4(),
-                    userName: username ?? '',
-                    email: email ?? '',
-                    password: password ?? '',
-                    address: address ?? '',
-                    imageUrl: imageUrl ?? '',
-                  })
-                  .then(() => {
-                    console.log('user added.');
-                    this.router.navigate(['/login']);
-                  });
-              })
-              .catch((err) => console.log(err));
-        }
+      this.userService.getUserByEmail(email ?? '').subscribe({
+        next: (user) => {
+          if (user) {
+            this.userExist = true;
+          } else {
+            this.selectedFile !== null &&
+              this.fileUploadService.uploadFile(this.selectedFile).subscribe({
+                next: (response: any) => {
+                  const imageUrl = response?.imageUrl;
+                  this.userService
+                    .addUser({
+                      id: uuidv4(),
+                      userName: username ?? '',
+                      email: email ?? '',
+                      password: password ?? '',
+                      address: address ?? '',
+                      imageUrl: imageUrl ?? '',
+                    })
+                    .subscribe({
+                      next: (user) => {
+                        console.log('user added.');
+                        this.router.navigate(['/login']);
+                      },
+                      error: (e) => console.error(e),
+                    });
+                },
+                error: (e) => console.error(e),
+              });
+          }
+        },
+        error: (e) => console.error(e),
       });
     } else {
       this.imageNotSelected = true;

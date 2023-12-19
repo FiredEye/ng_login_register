@@ -1,71 +1,44 @@
 import { Injectable } from '@angular/core';
-
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, catchError, map, throwError } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
 export class FileUploadService {
   private baseUrl = 'http://localhost:3001'; // Adjust the base URL as needed
+  constructor(private http: HttpClient) {}
 
-  async uploadFile(file: File): Promise<any> {
+  uploadFile(file: File): Observable<any> {
     const uploadUrl = `${this.baseUrl}/upload`;
 
     const formData = new FormData();
     formData.append('file', file);
-
-    try {
-      const response = await fetch(uploadUrl, {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      return response.json();
-    } catch (error) {
-      console.error('Error uploading file:', error);
-      throw error;
-    }
+    return this.http.post<any>(uploadUrl, formData).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error uploading file:', error);
+        return throwError(() => new Error('Failed adding user'));
+      })
+    );
   }
-  async deleteFile(imageUrl: string): Promise<any> {
+  deleteFile(imageUrl: string): Observable<void> {
     const deleteUrl = `${this.baseUrl}/remove?imageUrl=${imageUrl}`;
-
-    try {
-      const response = await fetch(deleteUrl, {
-        method: 'DELETE',
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      return response.json();
-    } catch (error) {
-      console.error('Error uploading file:', error);
-      throw error;
-    }
+    return this.http.delete<void>(deleteUrl).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error deleting user:', error);
+        return throwError(() => new Error('Failed deleting user file'));
+      })
+    );
   }
-  async updateFile(file: File, imageUrl: string): Promise<any> {
+  updateFile(file: File, imageUrl: string): Observable<any> {
     const updateUrl = `${this.baseUrl}/update`;
     const formData = new FormData();
-    console.log(imageUrl);
     formData.append('imageUrl', imageUrl);
     formData.append('file', file);
-
-    try {
-      const response = await fetch(updateUrl, {
-        method: 'PUT',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      return response.json();
-    } catch (error) {
-      console.error('Error uploading file:', error);
-      throw error;
-    }
+    return this.http.put<any>(updateUrl, formData).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error updating user file:', error);
+        return throwError(() => new Error('Failed updating user'));
+      })
+    );
   }
 }

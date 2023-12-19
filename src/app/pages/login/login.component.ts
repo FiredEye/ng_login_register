@@ -38,18 +38,24 @@ export class LoginComponent implements OnInit {
   loginUser() {
     const { email, password } = this.loginForm.value;
     console.log(email);
-    this.userService.getUserByEmail(email ?? '').then((user) => {
-      if (user) {
-        this.userService.checkUser(email ?? '', password ?? '').then((user) => {
-          if (user) {
-            this.router.navigate(['/home']);
-          } else {
-            this.passwordNotMatch = true;
-          }
-        });
-      } else {
-        this.userNotExist = true;
-      }
+    this.userService.getUserByEmail(email ?? '').subscribe({
+      next: (user) => {
+        if (user) {
+          this.userService.checkUser(email ?? '', password ?? '').subscribe({
+            next: (user) => {
+              if (user) {
+                this.router.navigate(['/home']);
+              } else {
+                this.passwordNotMatch = true;
+              }
+            },
+            error: (e) => console.error(e),
+          });
+        } else {
+          this.userNotExist = true;
+        }
+      },
+      error: (e) => console.error(e),
     });
   }
 }

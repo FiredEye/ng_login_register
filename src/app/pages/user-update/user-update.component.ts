@@ -17,11 +17,9 @@ export class UserUpdateComponent {
   user: User | undefined;
   constructor() {
     const userId = String(this.route.snapshot.params['id']);
-    this.userService
-      .getUserById(userId)
-      .then((user) => {
-        this.user = user;
-      })
-      .catch((err) => console.log(err));
+    this.userService.getUserById(userId).subscribe({
+      next: (user) => (this.user = user),
+      error: (e) => console.error(e),
+    });
   }
 }

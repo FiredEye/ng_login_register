@@ -16,11 +16,11 @@ export class HomeComponent {
   userService: UsersService = inject(UsersService);
 
   constructor() {
-    this.userService
-      .getAllUsers()
-      .then((userList: User[]) => {
+    this.userService.getAllUsers().subscribe({
+      next: (userList: User[]) => {
         this.userList = userList;
-      })
-      .catch((err) => console.log(err));
+      },
+      error: (e) => console.error(e),
+    });
   }
 }
