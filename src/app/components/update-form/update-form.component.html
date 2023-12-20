@@ -64,7 +64,59 @@
         } </small
       >}
     </div>
+    <div class="flex flex-col gap-3">
+      <label for="age">Age</label>
+      <input
+        type="number"
+        formControlName="age"
+        class="w-full border py-2 px-1"
+        name="age"
+        placeholder="Type your age"
+      />
+      @if (age.invalid && (age.dirty || age.touched)) {
+      <small class="block text-red-400">
+        @if(age.errors?.['required']){
 
+        <div>Age is required.</div>
+        }
+      </small>
+      }
+    </div>
+    <div class="flex flex-col gap-3">
+      <label for="gender">Gender</label>
+      <div class="flex gap-2">
+        <label>
+          <input
+            type="radio"
+            formControlName="gender"
+            name="gender"
+            value="male"
+            [checked]="gender.value === 'male'"
+          />
+          Male
+        </label>
+
+        <label>
+          <input
+            type="radio"
+            formControlName="gender"
+            name="gender"
+            value="female"
+            [checked]="gender.value === 'female'"
+          />
+          Female
+        </label>
+      </div>
+
+      @if (gender.invalid && (gender.dirty || gender.touched)) {
+      <small class="block text-red-400">
+        @if(gender.errors?.['required']){
+
+        <div>Gender is required.</div>
+        }
+      </small>
+      }
+    </div>
     <div class="flex flex-col gap-3">
       <label for="profileImage">Profile Image</label>
       <input

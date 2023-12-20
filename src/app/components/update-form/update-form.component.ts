@@ -4,7 +4,7 @@ import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { Router, RouterLink } from '@angular/router';
 import { UsersService } from '../../services/users.service';
-import { v4 as uuidv4 } from 'uuid';
+
 import { FileUploadService } from '../../services/file-upload.service';
 import { User } from '../../interfaces/user';
 import { finalize, switchMap } from 'rxjs';
@@ -25,6 +25,8 @@ export class UpdateFormComponent implements OnInit {
     username: ['', Validators.required],
     address: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
+    age: [0, Validators.required],
+    gender: ['', Validators.required],
   });
   userService: UsersService = inject(UsersService);
   fileUploadService: FileUploadService = inject(FileUploadService);
@@ -36,6 +38,8 @@ export class UpdateFormComponent implements OnInit {
         username: this.user.userName,
         address: this.user.address,
         email: this.user.email,
+        age: Number(this.user.age),
+        gender: this.user.gender,
       });
       this.imgSrc = this.imgBaseUrl + this.user.imageUrl;
     }
@@ -54,18 +58,25 @@ export class UpdateFormComponent implements OnInit {
   get email() {
     return this.updateForm.controls['email'];
   }
-
+  get age() {
+    return this.updateForm.controls['age'];
+  }
+  get gender() {
+    return this.updateForm.controls['gender'];
+  }
   onFileChange(event: any) {
     this.selectedFile = event.target.files[0];
     this.imgSrc = URL.createObjectURL(event.target.files[0]);
   }
   updateUser() {
-    const { username, email, address } = this.updateForm.value;
+    const { username, email, address, age, gender } = this.updateForm.value;
     const updateUserParams = {
       userName: username,
       email,
       password: this.user?.password,
       address,
+      age,
+      gender,
     };
     const updateObservable =
       this.selectedFile !== null

@@ -5,8 +5,200 @@
       "email": "hari@123.com",
       "password": "hari@123",
       "address": "Sarangkot",
-      "imageUrl": "/uploads/1703011291577-ss.jpg",
-      "id": "47752f03-f729-49ef-932d-58b37091297e"
+      "age": 57,
+      "gender": "female",
+      "imageUrl": "/uploads/ss.jpg",
+      "id": "1"
+    },
+    {
+      "id": "2",
+      "userName": "John",
+      "email": "john@123.com",
+      "password": "john@123",
+      "address": "New York",
+      "imageUrl": "/uploads/ss.jpg",
+      "gender": "male",
+      "age": 35
+    },
+    {
+      "id": "3",
+      "userName": "Emily",
+      "email": "emily@123.com",
+      "password": "emily@123",
+      "address": "London",
+      "imageUrl": "/uploads/ss.jpg",
+      "gender": "female",
+      "age": 42
+    },
+    {
+      "id": "4",
+      "userName": "Alex",
+      "email": "alex@123.com",
+      "password": "alex@123",
+      "address": "Sydney",
+      "imageUrl": "/uploads/ss.jpg",
+      "gender": "male",
+      "age": 20
+    },
+    {
+      "id": "5",
+      "userName": "Sophia",
+      "email": "sophia@123.com",
+      "password": "sophia@123",
+      "address": "Paris",
+      "imageUrl": "/uploads/ss.jpg",
+      "gender": "female",
+      "age": 52
+    },
+    {
+      "id": "6",
+      "userName": "Liam",
+      "email": "liam@123.com",
+      "password": "liam@123",
+      "address": "Berlin",
+      "imageUrl": "/uploads/ss.jpg",
+      "gender": "male",
+      "age": 43
+    },
+    {
+      "id": "7",
+      "userName": "Olivia",
+      "email": "olivia@123.com",
+      "password": "olivia@123",
+      "address": "Rome",
+      "imageUrl": "/uploads/ss.jpg",
+      "gender": "female",
+      "age": 31
+    },
+    {
+      "id": "8",
+      "userName": "Emma",
+      "email": "emma@123.com",
+      "password": "emma@123",
+      "address": "Tokyo",
+      "imageUrl": "/uploads/ss.jpg",
+      "gender": "female",
+      "age": 27
+    },
+    {
+      "id": "9",
+      "userName": "Noah",
+      "email": "noah@123.com",
+      "password": "noah@123",
+      "address": "Moscow",
+      "imageUrl": "/uploads/ss.jpg",
+      "gender": "male",
+      "age": 19
+    },
+    {
+      "id": "10",
+      "userName": "Ava",
+      "email": "ava@123.com",
+      "password": "ava@123",
+      "address": "Cairo",
+      "imageUrl": "/uploads/ss.jpg",
+      "gender": "female",
+      "age": 39
+    },
+    {
+      "id": "11",
+      "userName": "William",
+      "email": "william@123.com",
+      "password": "william@123",
+      "address": "Beijing",
+      "imageUrl": "/uploads/ss.jpg",
+      "gender": "male",
+      "age": 47
+    },
+    {
+      "id": "12",
+      "userName": "Isabella",
+      "email": "isabella@123.com",
+      "password": "isabella@123",
+      "address": "Delhi",
+      "imageUrl": "/uploads/ss.jpg",
+      "gender": "female",
+      "age": 56
+    },
+    {
+      "id": "13",
+      "userName": "James",
+      "email": "james@123.com",
+      "password": "james@123",
+      "address": "Seoul",
+      "imageUrl": "/uploads/ss.jpg",
+      "gender": "male",
+      "age": 24
+    },
+    {
+      "id": "14",
+      "userName": "Mia",
+      "email": "mia@123.com",
+      "password": "mia@123",
+      "address": "Mexico City",
+      "imageUrl": "/uploads/ss.jpg",
+      "gender": "female",
+      "age": 33
+    },
+    {
+      "id": "15",
+      "userName": "Benjamin",
+      "email": "benjamin@123.com",
+      "password": "benjamin@123",
+      "address": "Toronto",
+      "imageUrl": "/uploads/ss.jpg",
+      "gender": "male",
+      "age": 22
+    },
+    {
+      "id": "16",
+      "userName": "Evelyn",
+      "email": "evelyn@123.com",
+      "password": "evelyn@123",
+      "address": "Sydney",
+      "imageUrl": "/uploads/ss.jpg",
+      "gender": "female",
+      "age": 48
+    },
+    {
+      "id": "17",
+      "userName": "Lucas",
+      "email": "lucas@123.com",
+      "password": "lucas@123",
+      "address": "Paris",
+      "imageUrl": "/uploads/ss.jpg",
+      "gender": "male",
+      "age": 36
+    },
+    {
+      "id": "18",
+      "userName": "Aria",
+      "email": "aria@123.com",
+      "password": "aria@123",
+      "address": "Berlin",
+      "imageUrl": "/uploads/ss.jpg",
+      "gender": "female",
+      "age": 29
+    },
+    {
+      "id": "19",
+      "userName": "Henry",
+      "email": "henry@123.com",
+      "password": "henry@123",
+      "address": "Rome",
+      "imageUrl": "/uploads/ss.jpg",
+      "gender": "male",
+      "age": 18
+    },
+    {
+      "id": "20",
+      "userName": "Sofia",
+      "email": "sofia@123.com",
+      "password": "sofia@123",
+      "address": "Tokyo",
+      "imageUrl": "/uploads/ss.jpg",
+      "gender": "female",
+      "age": 37
     }
   ]
 }

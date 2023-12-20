@@ -47,6 +47,8 @@ export class RegisterComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
       confirmPassword: ['', Validators.required],
+      age: ['', Validators.required],
+      gender: ['', Validators.required],
     },
     {
       validators: this.passwordMatchValidator,
@@ -73,6 +75,12 @@ export class RegisterComponent implements OnInit {
   get password() {
     return this.registerForm.controls['password'];
   }
+  get age() {
+    return this.registerForm.controls['age'];
+  }
+  get gender() {
+    return this.registerForm.controls['gender'];
+  }
   get confirmPassword() {
     return this.registerForm.controls['confirmPassword'];
   }
@@ -83,7 +91,8 @@ export class RegisterComponent implements OnInit {
     this.imgSrc = URL.createObjectURL(event.target.files[0]);
   }
   registerUser() {
-    const { username, email, password, address } = this.registerForm.value;
+    const { username, email, password, address, age, gender } =
+      this.registerForm.value;
 
     if (this.selectedFile !== null) {
       this.userService.getUserByEmail(email ?? '').subscribe({
@@ -103,6 +112,8 @@ export class RegisterComponent implements OnInit {
                       password: password ?? '',
                       address: address ?? '',
                       imageUrl: imageUrl ?? '',
+                      age: Number(age) ?? 0,
+                      gender: gender ?? '',
                     })
                     .subscribe({
                       next: (user) => {
