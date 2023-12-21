@@ -33,7 +33,7 @@ export class PieChartComponent implements OnInit {
         },
         series: [
           {
-            name: 'Access From',
+            name: 'Age group',
             type: 'pie',
             radius: '60%',
             data: this.ageGroupCounts,

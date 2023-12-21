@@ -7,4 +7,6 @@ export interface User {
   imageUrl: string;
   age: number;
   gender: string;
+  isAdmin: boolean;
+  loggedInCount: number;
 }

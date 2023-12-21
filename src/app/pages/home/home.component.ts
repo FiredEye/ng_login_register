@@ -1,4 +1,11 @@
-import { ChangeDetectorRef, Component, NgZone, inject } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  NgZone,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 // import * as annyang from 'annyang';
 
@@ -13,11 +20,16 @@ declare const annyang: any;
   styleUrl: './home.component.css',
 })
 export class HomeComponent {
+  @ViewChild('filter') filterInput!: ElementRef<HTMLInputElement>; // Declare ViewChild
+  user = JSON.parse(sessionStorage.getItem('user') ?? '{}');
+
   annyang: any;
   userList: User[] = [];
   filteredList: User[] = [];
   userService: UsersService = inject(UsersService);
   mikeOn = false;
+  sortColumn: string | null = null;
+  sortOrder: 'asc' | 'desc' = 'asc';
   constructor(
     private router: Router,
     private cdRef: ChangeDetectorRef,
@@ -38,27 +50,25 @@ export class HomeComponent {
   handleMike() {
     this.mikeOn = !this.mikeOn;
     if (this.mikeOn) {
-      // Let's define our first command. First the text we expect, and then the function it should call
-
       var commands = {
+        hello: function () {
+          alert('Hi There!');
+        },
         '*tag': (tag: any) => {
           this.filterSearch(tag);
-          this.cdRef.detectChanges(); // Trigger change detection
-
-          // Run the following code inside the Angular zone
+          this.cdRef.detectChanges();
           this.ngZone.run(() => {
             setTimeout(() => {
               annyang.abort();
               this.mikeOn = false;
+              this.setSpeechValue(tag);
             }, 0);
           });
         },
       };
 
-      // Add our commands to annyang
       annyang.addCommands(commands);
 
-      // Start listening. You can call this here, or attach this call to an event, button, etc.
       annyang.start();
     } else {
       annyang.abort();
@@ -74,5 +84,38 @@ export class HomeComponent {
           filteredUser?.address.toLowerCase().includes(text.toLowerCase())
       );
     }
+  }
+  setSpeechValue(value: string) {
+    if (this.filterInput && this.filterInput.nativeElement) {
+      this.filterInput.nativeElement.value = value;
+    }
+  }
+  sortBy(column: keyof User) {
+    // Check if the column is already the active column for sorting
+    if (this.sortColumn === column) {
+      // Toggle the sorting order
+      this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+    } else {
+      // Set the new column for sorting and reset the order to ascending
+      this.sortColumn = column;
+      this.sortOrder = 'asc';
+    }
+    this.filteredList.sort((a, b) => {
+      const aValue = a[column] as string | number;
+      const bValue = b[column] as string | number;
+
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        // For string comparison, use localeCompare for case-insensitive sorting
+        return this.sortOrder === 'asc'
+          ? aValue.localeCompare(bValue)
+          : bValue.localeCompare(aValue);
+      } else {
+        const compareResult = aValue
+          .toString()
+          .localeCompare(bValue.toString());
+
+        return this.sortOrder === 'asc' ? compareResult : -compareResult;
+      }
+    });
   }
 }

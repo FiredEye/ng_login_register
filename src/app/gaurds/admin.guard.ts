@@ -1,12 +1,13 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-export const authGuard: CanActivateFn = (route, state) => {
+
+export const adminGuard: CanActivateFn = (route, state) => {
   const user = sessionStorage.getItem('user');
 
-  if (user !== null && JSON.parse(user)?.email) {
+  if (user !== null && JSON.parse(user)?.isAdmin) {
     return true;
   } else {
     const router = inject(Router);
-    return router.navigate(['login']);
+    return router.navigate(['home']);
   }
 };

@@ -69,11 +69,9 @@ export class UpdateFormComponent implements OnInit {
     this.imgSrc = URL.createObjectURL(event.target.files[0]);
   }
   updateUser() {
-    const { username, email, address, age, gender } = this.updateForm.value;
+    const { username, address, age, gender } = this.updateForm.value;
     const updateUserParams = {
       userName: username,
-      email,
-      password: this.user?.password,
       address,
       age,
       gender,
@@ -104,10 +102,7 @@ export class UpdateFormComponent implements OnInit {
         });
     } else {
       this.userService
-        .updateUser(this.user?.id || '', {
-          ...updateUserParams,
-          imageUrl: this.user?.imageUrl,
-        })
+        .updateUser(this.user?.id || '', updateUserParams)
         .pipe(finalize(() => this.onUpdateComplete()))
         .subscribe({
           next: () => console.log('User updated.'),

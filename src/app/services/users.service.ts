@@ -22,6 +22,7 @@ export class UsersService {
       })
     );
   }
+
   getUserById(id: string): Observable<User | undefined> {
     return this.http.get<User>(`${this.url}/${id}`).pipe(
       catchError((error: HttpErrorResponse) => {
@@ -40,6 +41,7 @@ export class UsersService {
       })
     );
   }
+
   checkUser(email: string, password: string): Observable<User | undefined> {
     return this.getAllUsers().pipe(
       map((users) =>
@@ -50,6 +52,22 @@ export class UsersService {
         return throwError(() => new Error('Failed to fetch user'));
       })
     );
+  }
+
+  increseLogCount(userId: string, updatedUserData: any): Observable<any> {
+    const updateUrl = `${this.url}/${userId}`;
+    return this.http
+      .patch(updateUrl, updatedUserData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error updating user:', error);
+          return throwError(() => new Error('Failed updating user'));
+        })
+      );
   }
   addUser(userData: User): Observable<User> {
     return this.http
@@ -65,10 +83,11 @@ export class UsersService {
         })
       );
   }
-  updateUser(userId: string, updatedUserData: any): Observable<User> {
+
+  updateUser(userId: string, updatedUserData: any): Observable<any> {
     const updateUrl = `${this.url}/${userId}`;
     return this.http
-      .put<User>(updateUrl, updatedUserData, {
+      .patch(updateUrl, updatedUserData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -80,6 +99,7 @@ export class UsersService {
         })
       );
   }
+
   deleteUser(userId: string): Observable<void> {
     const deleteUrl = `${this.url}/${userId}`;
     return this.http

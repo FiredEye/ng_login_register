@@ -1,17 +1,21 @@
 {
   "users": [
     {
-      "userName": "John",
-      "email": "john@123.com",
-      "password": "john@123",
+      "id": "2",
+      "isAdmin": true,
+      "loggedInCount": 4,
+      "userName": "Ram",
+      "email": "ram@123.com",
+      "password": "ram@123",
       "address": "New York",
-      "age": 60,
-      "gender": "female",
       "imageUrl": "/uploads/a.jpg",
-      "id": "2"
+      "gender": "female",
+      "age": 60
     },
     {
       "id": "3",
+      "isAdmin": false,
+      "loggedInCount": 10,
       "userName": "Emily",
       "email": "emily@123.com",
       "password": "emily@123",
@@ -22,6 +26,8 @@
     },
     {
       "id": "4",
+      "isAdmin": false,
+      "loggedInCount": 1,
       "userName": "Alex",
       "email": "alex@123.com",
       "password": "alex@123",
@@ -32,6 +38,8 @@
     },
     {
       "id": "5",
+      "isAdmin": false,
+      "loggedInCount": 5,
       "userName": "Sophia",
       "email": "sophia@123.com",
       "password": "sophia@123",
@@ -42,6 +50,8 @@
     },
     {
       "id": "6",
+      "isAdmin": false,
+      "loggedInCount": 2,
       "userName": "Liam",
       "email": "liam@123.com",
       "password": "liam@123",
@@ -52,6 +62,8 @@
     },
     {
       "id": "7",
+      "isAdmin": false,
+      "loggedInCount": 15,
       "userName": "Olivia",
       "email": "olivia@123.com",
       "password": "olivia@123",
@@ -62,6 +74,8 @@
     },
     {
       "id": "8",
+      "isAdmin": false,
+      "loggedInCount": 16,
       "userName": "Emma",
       "email": "emma@123.com",
       "password": "emma@123",
@@ -72,6 +86,8 @@
     },
     {
       "id": "9",
+      "isAdmin": false,
+      "loggedInCount": 3,
       "userName": "Noah",
       "email": "noah@123.com",
       "password": "noah@123",
@@ -82,6 +98,8 @@
     },
     {
       "id": "10",
+      "isAdmin": false,
+      "loggedInCount": 7,
       "userName": "Ava",
       "email": "ava@123.com",
       "password": "ava@123",
@@ -92,6 +110,8 @@
     },
     {
       "id": "11",
+      "isAdmin": false,
+      "loggedInCount": 5,
       "userName": "William",
       "email": "william@123.com",
       "password": "william@123",
@@ -102,6 +122,8 @@
     },
     {
       "id": "12",
+      "isAdmin": false,
+      "loggedInCount": 21,
       "userName": "Isabella",
       "email": "isabella@123.com",
       "password": "isabella@123",
@@ -112,6 +134,8 @@
     },
     {
       "id": "13",
+      "isAdmin": false,
+      "loggedInCount": 4,
       "userName": "James",
       "email": "james@123.com",
       "password": "james@123",
@@ -122,6 +146,8 @@
     },
     {
       "id": "14",
+      "isAdmin": false,
+      "loggedInCount": 6,
       "userName": "Mia",
       "email": "mia@123.com",
       "password": "mia@123",
@@ -132,6 +158,8 @@
     },
     {
       "id": "15",
+      "isAdmin": false,
+      "loggedInCount": 35,
       "userName": "Benjamin",
       "email": "benjamin@123.com",
       "password": "benjamin@123",
@@ -142,6 +170,8 @@
     },
     {
       "id": "16",
+      "isAdmin": false,
+      "loggedInCount": 22,
       "userName": "Evelyn",
       "email": "evelyn@123.com",
       "password": "evelyn@123",
@@ -152,6 +182,8 @@
     },
     {
       "id": "17",
+      "isAdmin": false,
+      "loggedInCount": 10,
       "userName": "Lucas",
       "email": "lucas@123.com",
       "password": "lucas@123",
@@ -162,6 +194,8 @@
     },
     {
       "id": "18",
+      "isAdmin": false,
+      "loggedInCount": 20,
       "userName": "Aria",
       "email": "aria@123.com",
       "password": "aria@123",
@@ -172,6 +206,8 @@
     },
     {
       "id": "19",
+      "isAdmin": false,
+      "loggedInCount": 3,
       "userName": "Henry",
       "email": "henry@123.com",
       "password": "henry@123",
@@ -182,6 +218,8 @@
     },
     {
       "id": "20",
+      "isAdmin": false,
+      "loggedInCount": 7,
       "userName": "Sofia",
       "email": "sofia@123.com",
       "password": "sofia@123",
@@ -189,6 +227,18 @@
       "imageUrl": "/uploads/s.jpg",
       "gender": "female",
       "age": 37
+    },
+    {
+      "userName": "hari",
+      "address": "ganabahal",
+      "age": 77,
+      "gender": "male",
+      "id": "e6ba6ffe-314a-484b-ae42-d7cb6c5fbd3a",
+      "isAdmin": false,
+      "loggedInCount": 6,
+      "email": "hari@123.com",
+      "password": "hari@123",
+      "imageUrl": "/uploads/qq.jpg"
     }
   ]
 }

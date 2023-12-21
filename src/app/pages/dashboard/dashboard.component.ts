@@ -4,13 +4,19 @@ import { BarChartComponent } from '../../components/bar-chart/bar-chart.componen
 import { RouterLink } from '@angular/router';
 import { UsersService } from '../../services/users.service';
 import { User } from '../../interfaces/user';
+import { DonutChartComponent } from '../../components/donut-chart/donut-chart.component';
 interface GenderCount {
   [key: string]: number;
 }
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [PieChartComponent, BarChartComponent, RouterLink],
+  imports: [
+    PieChartComponent,
+    BarChartComponent,
+    DonutChartComponent,
+    RouterLink,
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
@@ -18,6 +24,7 @@ export class DashboardComponent implements OnInit {
   userService: UsersService = inject(UsersService);
   userList: User[] = [];
   ageGroupCounts: { value: number; name: string }[] = [];
+  logCountData: { value: number; name: string }[] = [];
   genderData: { title: string[]; count: number[] } = { title: [], count: [] };
   ageGroups = [
     { min: 15, max: 25, name: '15-25' },
@@ -45,7 +52,10 @@ export class DashboardComponent implements OnInit {
         );
         this.genderData.title = Object.keys(genderCounts);
         this.genderData.count = Object.values(genderCounts);
-
+        this.logCountData = userList.map((user) => ({
+          value: user.loggedInCount,
+          name: user.userName,
+        }));
         userList.forEach((user) => {
           const userAge = user.age;
           const matchingGroup = this.ageGroups.find(

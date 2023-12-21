@@ -44,8 +44,20 @@ export class LoginComponent implements OnInit {
           this.userService.checkUser(email ?? '', password ?? '').subscribe({
             next: (user) => {
               if (user) {
-                sessionStorage.setItem('email', email as string);
-                this.router.navigate(['/home']);
+                this.userService
+                  .increseLogCount(user.id, {
+                    loggedInCount: Number(user.loggedInCount) + 1,
+                  })
+                  .subscribe({
+                    next: () => {
+                      sessionStorage.setItem(
+                        'user',
+                        JSON.stringify({ email, isAdmin: user.isAdmin })
+                      );
+
+                      this.router.navigate(['/home']);
+                    },
+                  });
               } else {
                 this.passwordNotMatch = true;
               }

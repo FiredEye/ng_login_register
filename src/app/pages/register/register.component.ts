@@ -114,6 +114,8 @@ export class RegisterComponent implements OnInit {
                       imageUrl: imageUrl ?? '',
                       age: Number(age) ?? 0,
                       gender: gender ?? '',
+                      isAdmin: false,
+                      loggedInCount: 0,
                     })
                     .subscribe({
                       next: (user) => {

@@ -7,6 +7,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { UserUpdateComponent } from './pages/user-update/user-update.component';
 import { authGuard } from './gaurds/auth.guard';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { adminGuard } from './gaurds/admin.guard';
 
 export const routes: Routes = [
   {
@@ -37,7 +38,7 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [authGuard],
+    canActivate: [authGuard, adminGuard],
   },
   { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];

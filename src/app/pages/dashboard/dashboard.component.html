@@ -5,13 +5,16 @@
       back
     </button>
   </div>
-  <div class="flex gap-10">
+  <div class="flex gap-10 flex-wrap">
     @if(genderData.title.length > 0) {<app-bar-chart
       [genderData]="genderData"
     ></app-bar-chart
     >} @if(ageGroupCounts.length>0){
 
     <app-pie-chart [ageGroupCounts]="ageGroupCounts"></app-pie-chart>
+    } @if(logCountData.length>0){
+
+    <app-donut-chart [logCountData]="logCountData"></app-donut-chart>
     }
   </div>
 </div>
