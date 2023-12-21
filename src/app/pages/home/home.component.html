@@ -1,7 +1,35 @@
 <h1>Home Page:</h1>
-<div class="min-w-[580px] shadow-lg rounded-md p-3 flex flex-col gap-2">
+<div class="min-w-[640px] shadow-lg rounded-md p-3 flex flex-col gap-2">
   <div class="flex justify-between items-center">
     <h1 class="font-bold text-[22px]">User List:</h1>
+    <div
+      class="w-[240px] h-[40px] flex justify-center items-center border-black border rounded-md overflow-hidden"
+    >
+      <input
+        type="text"
+        class="w-full py-2 px-1 border-none outline-none"
+        placeholder="Search users..."
+        #filter
+      />
+      <button
+        class="bg-green-500 h-full px-2 border-l border-black"
+        (click)="filterSearch(filter.value)"
+      >
+        <i class="fa-solid fa-magnifying-glass" style="font-size: 22px"></i>
+      </button>
+    </div>
+    <div
+      (click)="handleMike()"
+      title="Unmute it and search with voice"
+      class="w-6 cursor-pointer flex justify-center items-center"
+    >
+      @if(mikeOn){<i class="fa-solid fa-microphone" style="font-size: 22px"></i
+      >} @else{<i
+        class="fa-solid fa-microphone-slash"
+        style="font-size: 22px"
+      ></i
+      >}
+    </div>
     <button
       class="rounded-md px-4 py-2 bg-orange-400 font-bold"
       routerLink="/dashboard"
@@ -9,20 +37,25 @@
       dashboard
     </button>
   </div>
+
   <div class="mx-auto w-full my-2 space-y-9 overflow-x-auto h-[500px]">
     <table class="mt-4 w-full min-w-max table-auto text-left">
-      <thead class="sticky top-0 z-[999] bg-gray-400">
+      <thead class="sticky top-0 z-[999] bg-gray-400 text-center">
         <tr>
           <th>S.N.</th>
           <th>Email</th>
+          <th>Name</th>
+          <th>Address</th>
           <th>View Details</th>
         </tr>
       </thead>
       <tbody>
-        @for(user of userList; track $index){
+        @if(filteredList.length>0){ @for(user of filteredList; track $index){
         <tr class="border-b-2 text-center">
           <td class="p-2 m-1">{{ $index + 1 }}</td>
           <td class="p-2 m-1">{{ user.email }}</td>
+          <td class="p-2 m-1">{{ user.userName }}</td>
+          <td class="p-2 m-1">{{ user.address }}</td>
           <td class="p-2 m-1">
             <i
               class="pi pi-eye"
@@ -32,6 +65,9 @@
             ></i>
           </td>
         </tr>
+        } }@else{
+        <h1 class="font-bold text-[22px] text-center">No results found.</h1>
+
         }
       </tbody>
     </table>

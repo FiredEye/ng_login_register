@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { PieChartComponent } from '../../components/pie-chart/pie-chart.component';
 import { BarChartComponent } from '../../components/bar-chart/bar-chart.component';
 import { RouterLink } from '@angular/router';
@@ -14,7 +14,7 @@ interface GenderCount {
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   userService: UsersService = inject(UsersService);
   userList: User[] = [];
   ageGroupCounts: { value: number; name: string }[] = [];
@@ -26,7 +26,8 @@ export class DashboardComponent {
     { min: 46, max: 55, name: '46-55' },
     { min: 56, max: 100, name: '56+' },
   ];
-  constructor() {
+  constructor() {}
+  ngOnInit() {
     this.userService.getAllUsers().subscribe({
       next: (userList: User[]) => {
         this.userList = userList;
@@ -44,6 +45,7 @@ export class DashboardComponent {
         );
         this.genderData.title = Object.keys(genderCounts);
         this.genderData.count = Object.values(genderCounts);
+
         userList.forEach((user) => {
           const userAge = user.age;
           const matchingGroup = this.ageGroups.find(

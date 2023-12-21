@@ -39,5 +39,5 @@ export const routes: Routes = [
     component: DashboardComponent,
     canActivate: [authGuard],
   },
-  { path: '**', component: NotFoundComponent },
+  { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];
