@@ -41,9 +41,6 @@ export class HomeComponent {
       // Let's define our first command. First the text we expect, and then the function it should call
 
       var commands = {
-        hello: function () {
-          alert('why you mad');
-        },
         '*tag': (tag: any) => {
           this.filterSearch(tag);
           this.cdRef.detectChanges(); // Trigger change detection
