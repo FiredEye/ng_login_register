@@ -1,0 +1,161 @@
+<div class="min-w-[640px] shadow-lg rounded-md p-3 flex flex-col gap-2">
+  <div class="flex justify-between items-center">
+    <h1 class="font-bold text-[22px]">User List:</h1>
+    <div class="flex justify-center items-center gap-6 pr-6">
+      <div
+        class="w-[240px] h-[40px] flex justify-center items-center border-black border rounded-md overflow-hidden"
+      >
+        <input
+          type="text"
+          class="w-full py-2 px-1 border-none outline-none"
+          placeholder="Search users..."
+          #filter
+        />
+        <button
+          class="bg-green-500 h-full px-2 border-l border-black"
+          (click)="filterSearch(filter.value)"
+        >
+          <i class="fa-solid fa-magnifying-glass" style="font-size: 22px"></i>
+        </button>
+      </div>
+      <div
+        (click)="handleMike()"
+        title="Unmute it and search with voice"
+        class="w-6 cursor-pointer flex justify-center items-center"
+      >
+        @if(mikeOn){<i
+          class="fa-solid fa-microphone"
+          style="font-size: 22px"
+        ></i
+        >} @else{<i
+          class="fa-solid fa-microphone-slash"
+          style="font-size: 22px"
+        ></i
+        >}
+      </div>
+      @if(user?.isAdmin){
+
+      <button
+        class="rounded-md px-4 py-2 bg-orange-400 font-bold"
+        routerLink="/dashboard"
+      >
+        dashboard
+      </button>
+      }
+    </div>
+  </div>
+
+  <div class="mx-auto w-full my-2 space-y-9 overflow-x-auto h-[500px]">
+    <table class="mt-4 w-full min-w-max table-auto text-left">
+      <thead class="sticky top-0 z-[999] bg-gray-400 text-center">
+        <tr>
+          <th>S.N.</th>
+
+          <th
+            (click)="sortBy('email')"
+            class="cursor-pointer hover:bg-gray-500 py-3"
+          >
+            <div class="flex justify-center items-center gap-3">
+              @if(sortColumn!=='email'){<i
+                style="font-size: 12px"
+                class="fa-regular fa-circle"
+              ></i
+              >} @if(sortColumn==='email' && sortOrder === 'asc'){<i
+                class="fa-solid fa-chevron-up"
+                style="font-size: 12px"
+              ></i
+              >} @if(sortColumn==='email' && sortOrder === 'desc'){
+              <i class="fa-solid fa-chevron-down" style="font-size: 12px"></i>}
+              <p>Email</p>
+            </div>
+          </th>
+          <th
+            (click)="sortBy('userName')"
+            class="cursor-pointer hover:bg-gray-500"
+          >
+            <div class="flex justify-center items-center gap-3">
+              @if(sortColumn!=='userName'){<i
+                class="fa-regular fa-circle"
+                style="font-size: 12px"
+              ></i
+              >} @if(sortColumn==='userName' && sortOrder === 'asc'){<i
+                class="fa-solid fa-chevron-up"
+                style="font-size: 12px"
+              ></i
+              >} @if(sortColumn==='userName' && sortOrder === 'desc'){
+              <i class="fa-solid fa-chevron-down" style="font-size: 12px"></i>}
+              <p>Name</p>
+            </div>
+          </th>
+          <th
+            (click)="sortBy('address')"
+            class="cursor-pointer hover:bg-gray-500"
+          >
+            <div class="flex justify-center items-center gap-3">
+              @if(sortColumn!=='address'){<i
+                class="fa-regular fa-circle"
+                style="font-size: 12px"
+              ></i
+              >} @if(sortColumn==='address' && sortOrder === 'asc'){<i
+                class="fa-solid fa-chevron-up"
+                style="font-size: 12px"
+              ></i
+              >} @if(sortColumn==='address' && sortOrder === 'desc'){
+              <i class="fa-solid fa-chevron-down" style="font-size: 12px"></i>}
+              <p>Address</p>
+            </div>
+          </th>
+          <th>View Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if(filteredList.length>0){ @for(user of filteredList; track $index){
+        <tr class="border-b-2 text-center">
+          <td class="p-2 m-1">{{ $index + 1 }}</td>
+          <td class="p-2 m-1">{{ user.email }}</td>
+          <td class="p-2 m-1">{{ user.userName }}</td>
+          <td class="p-2 m-1">{{ user.address }}</td>
+          <td class="p-2 m-1">
+            <i
+              class="pi pi-eye"
+              style="color: green; font-size: 20px; cursor: pointer"
+              routerLink="/detail/{{ user.id }}"
+              title="view details"
+            ></i>
+          </td>
+        </tr>
+        } }@else{
+        <h1 class="font-bold text-[22px] text-center">No results found.</h1>
+
+        }
+      </tbody>
+    </table>
+  </div>
+  <div class="flex justify-between items-center">
+    <button
+      class="bg-red-500 rounded py-2 font-semibold w-fit my-2 px-2 hover:cursor-pointer text-center"
+      (click)="logout()"
+    >
+      Logout
+    </button>
+    <div class="flex justify-center gap-4 items-center">
+      <button
+        class="py-2 px-4 rounded bg-gray-800 text-white hover:bg-black"
+        (click)="changePage(page - 1)"
+        [style.cursor]="page === 1 ? 'not-allowed' : 'pointer'"
+        [disabled]="page === 1"
+      >
+        Prev
+      </button>
+      <p>{{ page }} - of - {{ totalPages }}</p>
+      <button
+        class="py-2 px-4 rounded bg-gray-800 text-white hover:bg-black cursor-not-allowed"
+        (click)="changePage(page + 1)"
+        [style.cursor]="page === totalPages ? 'not-allowed' : 'pointer'"
+        [disabled]="page === totalPages"
+      >
+        Next
+      </button>
+    </div>
+  </div>
+</div>

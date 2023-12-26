@@ -1,0 +1,10 @@
+@if(user){
+<div><app-update-form [user]="user"></app-update-form></div>
+}@if(error){
+<div class="shadow-lg rounded-md p-3 flex flex-col gap-3">
+  <button class="rounded-md px-4 py-2 bg-blue-400 self-end" routerLink="/home">
+    back
+  </button>
+  <h1 class="text-red-400 text-[22px]">{{ error }}</h1>
+</div>
+}
