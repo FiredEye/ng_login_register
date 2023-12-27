@@ -118,7 +118,7 @@ const userLogin = async (req, res) => {
     }
     if (user.account === "deActivated") {
       return res
-        .status(401)
+        .status(403)
         .json({ error: "This account has been Deactivated!" });
     }
     // Compare the provided password with the hashed password from the database
@@ -185,7 +185,7 @@ const updateUserDetails = async (req, res, userId) => {
     const result = await pool.query(query, values);
     const response = result.rows[0];
 
-    res.status(201).json({
+    res.status(200).json({
       email: response.email,
       userName: response.userName,
       isAdmin: response.isAdmin,

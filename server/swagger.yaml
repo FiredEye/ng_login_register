@@ -1,0 +1,389 @@
+openapi: 3.0.0
+info:
+  title: API Documentation
+  version: 1.0.0
+paths:
+  /api/getAllUsers:
+    get:
+      summary: Get all users
+      description: Retrieve a paginated list of users.
+      security:
+        - bearerAuth: []  # Assumes you are using bearer token authentication
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: The page number for pagination (default: 1)
+      responses:
+        '200':
+          description: A successful response with the list of users and pagination information
+          content:
+            application/json:
+              example:
+                data:
+                  - id: 1
+                    username: "user1"
+                    email: "user1@example.com"
+                    address: "New York"
+                    # Add other user properties here
+                totalPages: 3
+        '401':
+          description: Unauthorized. No valid token provided.
+          content:
+            application/json:
+              example:
+                "not authorized"
+        '404':
+          description: User not found or not authorized.
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              example:
+                error: "Internal Server Error"
+  
+  /api/getUserDetail/{id}:
+    get:
+      summary: Get user details
+      description: Retrieve detailed information about a user by ID.
+      security:
+        - bearerAuth: []  # Assumes you are using bearer token authentication
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            pattern: '^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$'
+          description: The ID of the user in UUID format
+      responses:
+        '200':
+          description: A successful response with the user details
+          content:
+            application/json:
+              example:
+                userDetails:
+                  id: '123e4567-e89b-12d3-a456-426614174001'
+                  username: "user1"
+                  email: "user1@example.com"
+                  address: "user address"
+                  imageUrl: "/uploads/profiles/your-image.jpg"
+                  age: 32
+                  gender: "male"
+                  
+        '400':
+          description: Bad Request. Invalid user ID format.
+          content:
+            application/json:
+              example:
+                error: "Invalid user ID format"
+        '401':
+          description: Unauthorized. No valid token provided.
+          content:
+            application/json:
+              example:
+                "not authorized"
+        '404':
+          description: User not found.
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              example:
+                error: "Internal Server Error"
+  
+  /api/search/{search}:
+    get:
+      summary: Search users
+      description: Retrieve a paginated list of users based on a search query.
+      security:
+        - bearerAuth: []  # Assumes you are using bearer token authentication
+      parameters:
+        - in: path
+          name: search
+          required: true
+          schema:
+            type: string
+          description: The search query to filter users
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: The page number for pagination (default: 1)
+      responses:
+        '200':
+          description: A successful response with the list of users and pagination information
+          content:
+            application/json:
+              example:
+                data:
+                  - id: 1
+                    userName: "user1"
+                    email: "user1@example.com"
+                    address: "123 Street, City"
+                    # Add other user properties here
+                totalPages: 3
+        '400':
+          description: Bad Request. Invalid search query.
+          content:
+            application/json:
+              example:
+                error: "Invalid search query. Please provide a search string."
+        '401':
+          description: Unauthorized. No valid token provided.
+          content:
+            application/json:
+              example:
+                "not authorized"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              example:
+                error: "Internal Server Error"
+  
+  /api/userRegister:
+    post:
+      summary: Register a new user
+      description: Register a new user with profile image upload.
+      security:
+        - bearerAuth: []  # Assumes you are using bearer token authentication
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                userName:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                confirmPassword:
+                  type: string
+                address:
+                  type: string
+                gender:
+                  type: string
+                age:
+                  type: integer
+                imageFile:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              example:
+                message: "User created successfully"
+        '400':
+          description: Bad Request. Invalid image file type or missing image file.
+          content:
+            application/json:
+              example:
+                error: "Image file not given"
+        '403':
+          description: Forbidden. Password does not match or email already exists.
+          content:
+            application/json:
+              example:
+                error1: "Password does not match"
+                error2: "Email already exists" 
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              example:
+                error: "Internal Server Error"
+  
+  /api/userLogin:
+    post:
+      summary: User login
+      description: Log in a user and generate a JWT token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+              required:
+                - email
+                - password
+      responses:
+        '201':
+          description: User logged in successfully. Returns user data and JWT token.
+          content:
+            application/json:
+              example:
+                email: user@example.com
+                token: your-jwt-token
+                userName: user1
+                isAdmin: false
+                address: "123 Street, City"
+                gender: "Male"
+                age: 25
+                loggedInCount: 5
+                imageUrl: "/uploads/profiles/your-image.jpg"
+        '401':
+          description: Unauthorized. User not found, password does not match.
+          content:
+            application/json:
+              example:
+                error1: "User not found"
+                error2: "Password does not match"
+        '403':
+          description: Deactivated Account
+          content:
+            application/json:
+              example:
+                error: "This account has been Deactivated!"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              example:
+                error: "Internal Server Error"
+  
+  /api/updateUserDetail/{id}:
+    patch:
+      summary: Update user details
+      description: Update details of the authenticated user.
+      security:
+        - bearerAuth: []  # Assumes you are using bearer token authentication
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The ID of the user in UUID format
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                userName:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                age:
+                  type: integer
+                imageFile:
+                  type: string
+                  format: binary
+              required:
+                - userName
+                - email
+      responses:
+        '200':
+          description: Successful response with user details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    format: email
+                  userName:
+                    type: string
+                  isAdmin:
+                    type: boolean
+                  address:
+                    type: string
+                  gender:
+                    type: string
+                  age:
+                    type: integer
+                  imageUrl:
+                    type: string
+              example:
+                email: user@example.com
+                userName: JohnDoe
+                isAdmin: false
+                address: "123 Street, City"
+                gender: "Male"
+                age: 30
+                imageUrl: "/uploads/profiles/johndoe.jpg"  
+        '400':
+          description: Bad Request. Invalid image file type or missing image file.
+          content:
+            application/json:
+              example:
+                error: "Please provide a valid image"
+        '403':
+          description: Forbidden. Not authorized to update another user's details.
+          content:
+            application/json:
+              example:
+                error: "Not Authorized!" 
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              example:
+                error: "Internal Server Error"
+  /api/deactivateUser/{id}:
+    patch:
+      summary: Deactivate user account
+      description: Deactivate the account of the authenticated user.
+      security:
+        - bearerAuth: []  # Assumes you are using bearer token authentication
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The ID of the user in UUID format
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                account:
+                  type: string
+                  enum: ["deActivated"]
+              required:
+                - account
+      responses:
+        '200':
+          description: Account deactivated successfully.
+          content:
+            application/json:
+              example:
+                message: "Account deactivated!"
+        '400':
+          description: Bad Request. Invalid or missing account status.
+          content:
+            application/json:
+              example:
+                error: "Invalid request. Please provide account status."
+        '403':
+          description: Forbidden. Not authorized to deactivate another user's account.
+          content:
+            application/json:
+              example:
+                error: "Not Authorized!"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              example:
+                error: "Internal Server Error"
